@@ -32,9 +32,6 @@ router.post('/add', upload, async (req, resp) => {
             type: 'success',
             message: 'User added successfully!'
         };
-        req.session.username = new_user.name
-        console.log(req.session.message);
-        console.log(req.session.username);
         await req.session.save()
         resp.redirect('/')
     } catch (saveError) {
@@ -47,29 +44,29 @@ router.get('/', async (req, resp) => {
     try {
         const users = await User.find({});
         resp.render('home', {
-            title : "Home Page",
+            title: "Home Page",
             users: users
         })
-      } catch (error) {
-        console.error('Error fetching members:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-      }
-});
-
-// router.get("/users", (req, resp) => {
-//     resp.send("All Users");
-// });
-router.get("/add", (req, resp) => {
-    resp.render('add-user', { title: "Add User" })
-});
-
-//get all users
-router.get('/users', async (req, resp) => {
-    try {
-        const users = await User.find({});
-        resp.json(users);
     } catch (error) {
         console.error('Error fetching users:', error);
+        resp.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+router.get("/add", (req, resp) => {
+    resp.render('add-user', { title: "Add User" });
+});
+
+router.get("/edit/:id", async (req, resp) => {
+    let id = req.params.id;
+    try {
+        const user = await User.findById(id);
+        resp.render('edit-user', {
+            title: "Edit User",
+            user: user
+        })
+    } catch (error) {
+        console.error('Error fetching user:', error);
         resp.status(500).json({ error: 'Internal Server Error' });
     }
 });

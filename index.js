@@ -15,13 +15,9 @@ dbConn.once("open", () => console.log("Connected to MongoDB successfully!"));
 // Set template engine
 app.set("view engine", "ejs");
 
-// app.get('/', (req, resp) => {
-//     resp.send('Hello World!');
-// });
-
 app.use(
     session({
-        secret: "939100",
+        secret: "SECRETKEY-12345",
         saveUninitialized: true,
         resave: false
     })
@@ -35,6 +31,9 @@ app.use((req, resp, next) => {
 
 // Routing prefix
 app.use("", require('./routes/routing'));
+
+// static upload folder for images
+app.use(express.static('upload'));
 
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);

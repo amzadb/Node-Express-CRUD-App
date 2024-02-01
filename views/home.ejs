@@ -9,7 +9,7 @@
                 </div>
             <% } %>    
             <div class="table-responsive">
-                <table class="table table-stripped text-center">
+                <table class="table table-stripped text-center my-3">
                     <thead>
                         <tr class="table-dark">
                             <th>ID</th>
@@ -22,15 +22,15 @@
                     </thead>
                     <tbody>
                         <% for(var i=0; i<users.length; i++) {%>
-                            <tr>
+                            <tr class="align-middle">
                                 <td><%= i+1 %></td>
-                                <td><img src=""></td>
+                                <td><img src="<%= users[i].image %>" width="50" class="img-thumbnail"></td>
                                 <td><%= users[i].name %></td>
                                 <td><%= users[i].email %></td>
                                 <td><%= users[i].phone %></td>
                                 <td>
-                                    <a href="#" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                    <a href="#" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                    <a href="/edit/<%= users[i]._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    <a href="/delete/<%= users[i]._id %>" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
                                 </td>
                             </tr>
                          <% } %>
