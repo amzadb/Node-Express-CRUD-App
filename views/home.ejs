@@ -7,7 +7,7 @@
                     <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close">
                     </button> <strong><%= message.message %></strong>
                 </div>
-            <% } %>
+            <% } %>    
             <div class="table-responsive">
                 <table class="table table-stripped text-center">
                     <thead>
@@ -21,17 +21,19 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><img src=""></td>
-                            <td>Amzad</td>
-                            <td>amzad.basha@gmail.com</td>
-                            <td>9391001339</td>
-                            <td>
-                                <a href="#" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                <a href="#" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
-                            </td>
-                        </tr>
+                        <% for(var i=0; i<users.length; i++) {%>
+                            <tr>
+                                <td><%= i+1 %></td>
+                                <td><img src=""></td>
+                                <td><%= users[i].name %></td>
+                                <td><%= users[i].email %></td>
+                                <td><%= users[i].phone %></td>
+                                <td>
+                                    <a href="#" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    <a href="#" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                </td>
+                            </tr>
+                         <% } %>
                     </tbody>
                 </table>
             </div>
