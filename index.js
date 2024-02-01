@@ -15,9 +15,6 @@ dbConn.once("open", () => console.log("Connected to MongoDB successfully!"));
 // Set template engine
 app.set("view engine", "ejs");
 
-// Routing prefix
-app.use("", require('./routes/routing'));
-
 // app.get('/', (req, resp) => {
 //     resp.send('Hello World!');
 // });
@@ -32,9 +29,12 @@ app.use(
 
 app.use((req, resp, next) => {
     resp.locals.message = req.session.message;
-//    delete req.session.message;
+    delete req.session.message;
     next();
 });
+
+// Routing prefix
+app.use("", require('./routes/routing'));
 
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
