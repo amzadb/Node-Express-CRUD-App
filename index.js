@@ -22,6 +22,20 @@ app.use("", require('./routes/routing'));
 //     resp.send('Hello World!');
 // });
 
+app.use(
+    session({
+        secret: "939100",
+        saveUninitialized: true,
+        resave: false
+    })
+);
+
+app.use((req, resp, next) => {
+    resp.locals.message = req.session.message;
+//    delete req.session.message;
+    next();
+});
+
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 })
