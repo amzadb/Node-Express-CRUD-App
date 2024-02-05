@@ -107,4 +107,28 @@ router.post("/update/:id", upload, async (req, resp) => {
     });
 });
 
+router.get("/delete/:id", async (req, resp) => {
+    let id = req.params.id;
+    User.findOneAndRemove(id, () => {
+        if (req.file.filename != '') {
+            try {
+                fs.unlinkSync("./upload/" + req.file.filename);
+            } catch(err) {
+                console.log(err);
+            }
+        }
+        try {
+            req.session.message = {
+                type: 'success',
+                message: 'User deleted successfully!'
+            };
+            // await req.session.save();
+            resp.redirect('/')
+        } catch (saveError) {
+            console.error('Error deleting user:', saveError);
+            return resp.status(500).json({ error: 'Error deleting user' });
+        }
+    });    
+});
+
 module.exports = router;
