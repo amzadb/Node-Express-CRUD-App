@@ -41,6 +41,7 @@ router.post('/add', upload, async (req, resp) => {
     }
 });
 
+// Listing the users on homepage
 router.get('/', async (req, resp) => {
     try {
         const users = await User.find({});
@@ -54,10 +55,12 @@ router.get('/', async (req, resp) => {
     }
 });
 
+// Add user page
 router.get("/add", (req, resp) => {
     resp.render('add-user', { title: "Add User" });
 });
 
+// Edit user page
 router.get("/edit/:id", async (req, resp) => {
     let id = req.params.id;
     try {
@@ -72,6 +75,7 @@ router.get("/edit/:id", async (req, resp) => {
     }
 });
 
+// Update user details
 router.post("/update/:id", upload, async (req, resp) => {
     let id = req.params.id;
     let new_image = "";
@@ -107,6 +111,7 @@ router.post("/update/:id", upload, async (req, resp) => {
     });
 });
 
+// Delete user
 router.get("/delete/:id", async (req, resp) => {
     let id = req.params.id;
     User.findOneAndRemove(id, () => {
