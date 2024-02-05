@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/users');
 const multer = require('multer');
+const fs = require('fs');
 
 // Image upload
 var storage = multer.diskStorage({
@@ -69,6 +70,41 @@ router.get("/edit/:id", async (req, resp) => {
         console.error('Error fetching user:', error);
         resp.status(500).json({ error: 'Internal Server Error' });
     }
+});
+
+router.post("/update/:id", upload, async (req, resp) => {
+    let id = req.params.id;
+    let new_image = "";
+
+    if (req.file) {
+        new_image = req.file.filename;
+        try {
+            fs.unlinkSync("./upload/" + req.body.old_image);
+        } catch(err) {
+            console.log(err);
+        }
+    } else {
+        new_image = req.body.old_image;
+    }
+
+    User.findByIdAndUpdate(id, {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone,
+        image: new_image
+    }, () => {
+        try {
+            req.session.message = {
+                type: 'success',
+                message: 'User updated successfully!'
+            };
+            // await req.session.save();
+            resp.redirect('/')
+        } catch (saveError) {
+            console.error('Error updating user:', saveError);
+            return resp.status(500).json({ error: 'Error updating user' });
+        }
+    });
 });
 
 module.exports = router;
