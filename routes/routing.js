@@ -91,49 +91,42 @@ router.post("/update/:id", upload, async (req, resp) => {
         new_image = req.body.old_image;
     }
 
-    User.findByIdAndUpdate(id, {
-        name: req.body.name,
-        email: req.body.email,
-        phone: req.body.phone,
-        image: new_image
-    }, () => {
-        try {
-            req.session.message = {
-                type: 'success',
-                message: 'User updated successfully!'
-            };
-            // await req.session.save();
-            resp.redirect('/')
-        } catch (saveError) {
-            console.error('Error updating user:', saveError);
-            return resp.status(500).json({ error: 'Error updating user' });
-        }
-    });
+    try {
+        const user = await User.findById(id);
+        user.name = req.body.name,
+        user.email = req.body.email,
+        user.phone = req.body.phone,
+        user.image = new_image
+        user.save()
+        req.session.message = {
+            type: 'success',
+            message: 'User updated successfully!'
+        };
+        await req.session.save();
+        resp.redirect('/')
+    } catch (error) {
+        console.error('Error updating user:', saveError);
+        return resp.status(500).json({ error: 'Error updating user' });
+    }
 });
 
 // Delete user
 router.get("/delete/:id", async (req, resp) => {
-    let id = req.params.id;
-    User.findOneAndRemove(id, () => {
-        if (req.file.filename != '') {
-            try {
-                fs.unlinkSync("./upload/" + req.file.filename);
-            } catch(err) {
-                console.log(err);
-            }
-        }
-        try {
-            req.session.message = {
-                type: 'success',
-                message: 'User deleted successfully!'
-            };
-            // await req.session.save();
-            resp.redirect('/')
-        } catch (saveError) {
-            console.error('Error deleting user:', saveError);
-            return resp.status(500).json({ error: 'Error deleting user' });
-        }
-    });    
+    try {
+        let id = req.params.id;
+        const user = await User.findById(id);
+        await user.deleteOne()
+        resp.redirect('/')
+        req.session.message = {
+            type: 'success',
+            message: 'User deleted successfully!'
+        };
+        await req.session.save()
+
+    } catch (error) {
+        console.error('Error updating user:', saveError);
+        return resp.status(500).json({ error: 'Error deleting user' });
+    }    
 });
 
 module.exports = router;
