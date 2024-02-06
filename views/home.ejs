@@ -46,8 +46,8 @@
                                 <td><%= users[i].email %></td>
                                 <td><%= users[i].phone %></td>
                                 <td>
-                                    <a href="#" class="text-danger delete-button" data-toggle="modal" data-target="#myModal" data-user-id="<%= users[i]._id %>"><i class="fas fa-trash fa-lg mx-1"></i></a>
                                     <a href="/edit/<%= users[i]._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    <a href="#" class="text-danger delete-button" data-toggle="modal" data-target="#myModal" data-user-id="<%= users[i]._id %>"><i class="fas fa-trash fa-lg mx-1"></i></a>
                                 </td>
                             </tr>
                          <% } %>
@@ -57,16 +57,5 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-<script>
-    $(document).ready(function () {
-        $('.delete-button').click(function () {
-            var userId = $(this).data('user-id');
-            $('#userIdToDelete').text(userId);
-            $('#deleteLink').attr('href', '/delete/' + userId);
-        });
-    });
-</script>
+
 <%- include('layout/footer') %>
