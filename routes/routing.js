@@ -93,11 +93,11 @@ router.post("/update/:id", upload, async (req, resp) => {
 
     try {
         const user = await User.findById(id);
-        user.name = req.body.name,
-        user.email = req.body.email,
-        user.phone = req.body.phone,
-        user.image = new_image
-        user.save()
+        user.name = req.body.name;
+        user.email = req.body.email;
+        user.phone = req.body.phone;
+        user.image = new_image;
+        user.save();
         req.session.message = {
             type: 'success',
             message: 'User updated successfully!'
@@ -115,16 +115,15 @@ router.get("/delete/:id", async (req, resp) => {
     try {
         let id = req.params.id;
         const user = await User.findById(id);
-        await user.deleteOne()
-        resp.redirect('/')
+        await user.deleteOne();
         req.session.message = {
             type: 'success',
             message: 'User deleted successfully!'
         };
-        await req.session.save()
-
+        await req.session.save();
+        resp.redirect('/');
     } catch (error) {
-        console.error('Error updating user:', saveError);
+        console.error('Error deleting user:', saveError);
         return resp.status(500).json({ error: 'Error deleting user' });
     }    
 });
