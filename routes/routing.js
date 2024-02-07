@@ -20,11 +20,16 @@ var upload = multer({
 
 // Insert user into DB
 router.post('/add', upload, async (req, resp) => {
+    let new_image = "";
+
+    if (req.file) {
+        new_image = req.file.filename;
+    }
     const user = new User({
         name: req.body.name,
         email: req.body.email,
         phone: req.body.phone,
-        image: req.file.filename
+        image: new_image
     });
     let new_user;
     try {
